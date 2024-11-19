@@ -26,7 +26,7 @@ Additionally, the project implements Interval Neural Networks (INNs) to verify t
 ## Key Features
 - Reinforcement Learning:
   - Train a neural network policy using an reinforcement learning algorithm in the CartPole environment.
-- sation Techniques:
+- Quantisation Techniques:
   - Apply and compare PTQ and QAT for model optimization.
 - Verification with Interval Neural Networks (INNs):
   - Use INNs to verify decision consistency between unquantised and quantised models.
