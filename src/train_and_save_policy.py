@@ -1,7 +1,7 @@
 import torch
-from models.policy_model import PolicyNetwork, save_policy_model
+from policy_model import PolicyNetwork, save_policy_model
 import gymnasium as gym
-from src.train_policy import train_policy
+from train_policy import train_policy
 
 env = gym.make('CartPole-v1')
 input_dim = env.observation_space.shape[0]

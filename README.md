@@ -79,6 +79,10 @@ python evaluate_models.py
 Consistency_Quantized_Constraints/
 ├── src/                      # Source code directory
 │   ├── models.py             # Contains the PolicyNetwork class definition
+│   ├── policy_model.py       # Contains the PolicyNetwork class definition and utilities for baseline model
+│   ├── ptq_model.py          # Contains the PTQPolicyNetwork class and quantization utilities
+│   ├── train_and_save_policy.py # Script to train the baseline policy and save it
+│   ├── apply_and_save_ptq.py    # Script to apply PTQ and save the quantized policy
 │   ├── train_policy.py       # Script to train the baseline policy
 │   ├── apply_quantization.py # Script to apply PTQ and QAT
 │   ├── verify_consistency.py # Script to verify consistency using INNs
@@ -92,8 +96,9 @@ Consistency_Quantized_Constraints/
 │   └── test_interval_nn.py   # Unit tests for interval_nn.py
 ├── doc/                      # Documentation directory
 │   ├── final_presentation.pdf # Final presentation slides
-├── models/                   # Directory to store trained models
-│   └── (model files)         # Trained policy and quantized models
+├── models/                   # Directory for storing models
+│   ├── policy.pth            # Saved baseline trained policy
+│   └── ptq_policy.pth        # Saved quantized PTQ policy
 ├── requirements.txt          # List of required dependencies
 └── README.md                 # Project documentation
 
