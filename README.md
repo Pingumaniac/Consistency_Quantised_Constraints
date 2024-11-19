@@ -18,12 +18,78 @@ CS 5891 Special Topics - Algorithms for Decision-Making Final Project
 * Assistant Professor in the Computer Science at Vanderbilt University
 * Email: ayan.mukhopadhyay@vanderbilt.edu
 
+## Project Overview
+This project explores the trade-offs between efficiency and performance in decision-making systems by quantizing neural network policies and verifying their consistency with unquantized models. Using the CartPole environment in Gymnasium, the project evaluates both Post-Training Quantization (PTQ) and Quantization-Aware Training (QAT), comparing their impact on decision accuracy, inference speed, and robustness.
+
+Additionally, the project implements Interval Neural Networks (INNs) to verify that the quantized networks remain consistent with the original models, ensuring reliability in decision-making under quantized constraints.
+
+## Key Features
+- Reinforcement Learning:
+  - Train a neural network policy using a REINFORCE-like algorithm in the CartPole environment.
+- Quantization Techniques:
+  - Apply and compare PTQ and QAT for model optimization.
+- Verification with Interval Neural Networks (INNs):
+  - Use INNs to verify decision consistency between unquantized and quantized models.
+- Performance Metrics:
+  - Measure total rewards, inference speed, and memory usage for quantized and unquantized models.
+- Robustness Testing:
+  - Test the consistency of decisions under quantization-induced errors and adversarial inputs.
+
+
 ## Tools and Technologies
 
-1. Python
+1. Python 
 2. PyTorch
 3. Gymnasium
+4. Pytest
+
+## Installation Instructions
+
+Clone the repository and install dependencies:
+```
+git clone https://github.com/Pingumaniac/Consistency_Quantized_Constraints.git
+cd Consistency_Quantized_Constraints
+pip3 install -r requirements.txt
+```
+
+## Instructions to execute the software
+
+1. Train the Policy: Train a neural network policy for the CartPole environment:
+```
+python3 train_policy.py
+```
+
+2. Apply Quantization: Apply PTQ or QAT to the trained model:
+```
+python3 apply_quantization.py
+```
+
+3. Verify Consistency: Verify the consistency between quantized and unquantized models using INNs:
+```
+python verify_consistency.py
+```
+
+4. Evaluate Models: Compare the performance of baseline, PTQ, and QAT models:
+```
+python evaluate_models.py
+```
+
+## Project structure
+```
+Consistency_Quantized_Constraints/
+├── doc/                      # Directory to store final presentation slides
+├── train_policy.py           # Script to train the baseline policy
+├── apply_quantization.py     # Script to apply PTQ and QAT
+├── verify_consistency.py     # Script to verify consistency using INNs
+├── evaluate_models.py        # Script to evaluate and compare models
+├── models/                   # Directory to store trained models
+├── requirements.txt          # List of required dependencies
+├── test/                     # Directory to store unit tests for validating individual components
+└── README.md                 # Project documentation
+```
+
 
 ## Bug tracking
 
 * All users can view and report a bug in "GitHub Issues" of our repository.
+* Please include: a clear description of the issue, steps to reproduce the issue, and environment details (e.g., Python version, OS).
