@@ -13,13 +13,13 @@ def apply_qat(policy):
     quantised_policy.qconfig = torch.quantization.get_default_qat_qconfig('fbgemm')
     prepare_qat(quantised_policy, inplace=True)
     # Simulated fine-tuning
-    optimizer = torch.optim.Adam(quantised_policy.parameters(), lr=1e-4)
+    optimiser = torch.optim.Adam(quantised_policy.parameters(), lr=1e-4)
     for epoch in range(10):  # Fine-tuning loop
-        optimizer.zero_grad()
+        optimiser.zero_grad()
         # Simulated loss computation
         loss = torch.tensor(0.1, requires_grad=True)  # Dummy loss
         loss.backward()
-        optimizer.step()
+        optimiser.step()
     convert(quantised_policy, inplace=True)
     return quantised_policy
 

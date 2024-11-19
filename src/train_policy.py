@@ -4,7 +4,7 @@ import torch.nn as nn
 import torch.optim as optim
 from models import PolicyNetwork
 
-def train_policy(env, policy, optimizer, num_episodes):
+def train_policy(env, policy, optimiser, num_episodes):
     for episode in range(num_episodes):
         state, _ = env.reset()
         log_probs = []
@@ -32,10 +32,10 @@ def train_policy(env, policy, optimizer, num_episodes):
         policy_loss = []
         for log_prob, reward in zip(log_probs, discounted_rewards):
             policy_loss.append(-log_prob * reward)
-        optimizer.zero_grad()
+        optimiser.zero_grad()
         policy_loss = torch.cat(policy_loss).sum()
         policy_loss.backward()
-        optimizer.step()
+        optimiser.step()
 
 if __name__ == "__main__":
     env = gym.make('CartPole-v1')
@@ -43,6 +43,6 @@ if __name__ == "__main__":
     output_dim = env.action_space.n
 
     policy = PolicyNetwork(input_dim, output_dim)
-    optimizer = optim.Adam(policy.parameters(), lr=1e-3)
-    train_policy(env, policy, optimizer, num_episodes=500)
+    optimiser = optim.Adam(policy.parameters(), lr=1e-3)
+    train_policy(env, policy, optimiser, num_episodes=500)
     torch.save(policy.state_dict(), "models/policy.pth")

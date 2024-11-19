@@ -10,7 +10,7 @@ class TestTrainPolicy(unittest.TestCase):
         self.input_dim = self.env.observation_space.shape[0]
         self.output_dim = self.env.action_space.n
         self.policy = PolicyNetwork(self.input_dim, self.output_dim)
-        self.optimizer = torch.optim.Adam(self.policy.parameters(), lr=1e-3)
+        self.optimszer = torch.optim.Adam(self.policy.parameters(), lr=1e-3)
 
     def test_training_improves_reward(self):
         # Measure initial reward
@@ -24,7 +24,7 @@ class TestTrainPolicy(unittest.TestCase):
                 break
 
         # Train policy
-        train_policy(self.env, self.policy, self.optimizer, num_episodes=10)
+        train_policy(self.env, self.policy, self.optimiser, num_episodes=10)
 
         # Measure reward after training
         state, _ = self.env.reset()
