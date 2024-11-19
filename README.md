@@ -38,7 +38,7 @@ Additionally, the project implements Interval Neural Networks (INNs) to verify t
 
 ## Tools and Technologies
 
-1. Python 
+1. Python
 2. PyTorch
 3. Gymnasium
 4. Pytest
@@ -77,15 +77,26 @@ python evaluate_models.py
 ## Project structure
 ```
 Consistency_Quantized_Constraints/
-├── doc/                      # Directory to store final presentation slides
-├── train_policy.py           # Script to train the baseline policy
-├── apply_quantization.py     # Script to apply PTQ and QAT
-├── verify_consistency.py     # Script to verify consistency using INNs
-├── evaluate_models.py        # Script to evaluate and compare models
+├── src/                      # Source code directory
+│   ├── models.py             # Contains the PolicyNetwork class definition
+│   ├── train_policy.py       # Script to train the baseline policy
+│   ├── apply_quantization.py # Script to apply PTQ and QAT
+│   ├── verify_consistency.py # Script to verify consistency using INNs
+│   ├── evaluate_models.py    # Script to evaluate and compare models
+│   └── interval_nn.py        # Implementation of the interval neural network functionality
+├── test/                     # Unit tests directory
+│   ├── test_train_policy.py  # Unit tests for train_policy.py
+│   ├── test_apply_quantization.py # Unit tests for apply_quantization.py
+│   ├── test_verify_consistency.py # Unit tests for verify_consistency.py
+│   ├── test_evaluate_models.py    # Unit tests for evaluate_models.py
+│   └── test_interval_nn.py   # Unit tests for interval_nn.py
+├── doc/                      # Documentation directory
+│   ├── final_presentation.pdf # Final presentation slides
 ├── models/                   # Directory to store trained models
+│   └── (model files)         # Trained policy and quantized models
 ├── requirements.txt          # List of required dependencies
-├── test/                     # Directory to store unit tests for validating individual components
 └── README.md                 # Project documentation
+
 ```
 
 
