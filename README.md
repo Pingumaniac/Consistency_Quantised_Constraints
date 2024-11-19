@@ -19,7 +19,7 @@ CS 5891 Special Topics - Algorithms for Decision-Making Final Project
 * Email: ayan.mukhopadhyay@vanderbilt.edu
 
 ## Project Overview
-This project explores the trade-offs between efficiency and performance in decision-making systems by quantising neural network policies and verifying their consistency with unquantized models. Using the CartPole environment in Gymnasium, the project evaluates both Post-Training Quantisation (PTQ) and Quantisation-Aware Training (QAT), comparing their impact on decision accuracy, inference speed, and robustness.
+This project explores the trade-offs between efficiency and performance in decision-making systems by quantising neural network policies and verifying their consistency with unquantised models. Using the CartPole environment in Gymnasium, the project evaluates both Post-Training Quantisation (PTQ) and Quantisation-Aware Training (QAT), comparing their impact on decision accuracy, inference speed, and robustness.
 
 Additionally, the project implements Interval Neural Networks (INNs) to verify that the quantised networks remain consistent with the original models, ensuring reliability in decision-making under quantised constraints.
 
