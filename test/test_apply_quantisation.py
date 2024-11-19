@@ -1,9 +1,9 @@
 import unittest
 import torch
 from src.models import PolicyNetwork
-from src.apply_quantization import apply_ptq, apply_qat
+from apply_quantisation import apply_ptq, apply_qat
 
-class TestApplyQuantization(unittest.TestCase):
+class TestApplyQuantisation(unittest.TestCase):
     def setUp(self):
         self.input_dim = 4
         self.output_dim = 2

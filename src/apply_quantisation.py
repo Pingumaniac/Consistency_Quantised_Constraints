@@ -2,12 +2,12 @@ import torch
 from torch.quantization import quantize_dynamic, QuantWrapper, prepare_qat, convert
 from models import PolicyNetwork
 
-# Apply Post-Training Quantization (PTQ)
+# Apply Post-Training Quantisation (PTQ)
 def apply_ptq(policy):
     quantized_policy = quantize_dynamic(policy, {torch.nn.Linear}, dtype=torch.qint8)
     return quantized_policy
 
-# Apply Quantization-Aware Training (QAT)
+# Apply Quantisation-Aware Training (QAT)
 def apply_qat(policy):
     quantized_policy = QuantWrapper(policy)
     quantized_policy.qconfig = torch.quantization.get_default_qat_qconfig('fbgemm')
