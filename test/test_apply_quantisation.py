@@ -12,16 +12,16 @@ class TestApplyQuantisation(unittest.TestCase):
 
     def test_ptq_reduces_size(self):
         ptq_policy = apply_ptq(self.policy)
-        unquantized_size = sum(p.numel() for p in self.policy.parameters())
-        quantized_size = sum(p.numel() for p in ptq_policy.parameters())
-        self.assertLess(quantized_size, unquantized_size, "PTQ should reduce model size")
+        unquantised_size = sum(p.numel() for p in self.policy.parameters())
+        quantised_size = sum(p.numel() for p in ptq_policy.parameters())
+        self.assertLess(quantised_size, unquantised_size, "PTQ should reduce model size")
 
     def test_qat_fine_tuning_preserves_accuracy(self):
         qat_policy = apply_qat(self.policy)
         input_sample = torch.rand(self.input_dim)
         original_output = self.policy(input_sample)
-        quantized_output = qat_policy(input_sample)
-        self.assertTrue(torch.allclose(original_output, quantized_output, atol=0.1), "QAT should preserve accuracy")
+        quantised_output = qat_policy(input_sample)
+        self.assertTrue(torch.allclose(original_output, quantised_output, atol=0.1), "QAT should preserve accuracy")
 
 if __name__ == '__main__':
     unittest.main()

@@ -18,7 +18,7 @@ class TestVerifyConsistency(unittest.TestCase):
         test_inputs = [torch.rand(self.input_dim) for _ in range(10)]
         quant_error = 0.01
         consistency = verify_decision_consistency(self.policy, self.ptq_policy, test_inputs, quant_error)
-        self.assertTrue(consistency, "Quantized model should remain consistent with the baseline")
+        self.assertTrue(consistency, "Quantised model should remain consistent with the baseline")
 
 if __name__ == '__main__':
     unittest.main()

@@ -49,13 +49,13 @@ class TestIntervalNN(unittest.TestCase):
 
     def test_consistency_with_baseline(self):
         input_tensor = torch.tensor([1.0, 2.0, 3.0, 4.0])
-        unquantized_output = self.policy(input_tensor)
+        unquantised_output = self.policy(input_tensor)
         input_interval = Interval(input_tensor - self.quant_error, input_tensor + self.quant_error)
 
         output_interval = self.interval_nn.propagate(input_interval)
 
-        self.assertTrue(torch.all(unquantized_output >= output_interval.lower), "Unquantized output out of interval bounds")
-        self.assertTrue(torch.all(unquantized_output <= output_interval.upper), "Unquantized output out of interval bounds")
+        self.assertTrue(torch.all(unquantised_output >= output_interval.lower), "Unquantised output out of interval bounds")
+        self.assertTrue(torch.all(unquantised_output <= output_interval.upper), "Unquantised output out of interval bounds")
 
 if __name__ == "__main__":
     unittest.main()

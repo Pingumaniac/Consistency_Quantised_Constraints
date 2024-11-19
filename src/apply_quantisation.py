@@ -4,24 +4,24 @@ from models import PolicyNetwork
 
 # Apply Post-Training Quantisation (PTQ)
 def apply_ptq(policy):
-    quantized_policy = quantize_dynamic(policy, {torch.nn.Linear}, dtype=torch.qint8)
-    return quantized_policy
+    quantised_policy = quantize_dynamic(policy, {torch.nn.Linear}, dtype=torch.qint8)
+    return quantised_policy
 
 # Apply Quantisation-Aware Training (QAT)
 def apply_qat(policy):
-    quantized_policy = QuantWrapper(policy)
-    quantized_policy.qconfig = torch.quantization.get_default_qat_qconfig('fbgemm')
-    prepare_qat(quantized_policy, inplace=True)
+    quantised_policy = QuantWrapper(policy)
+    quantised_policy.qconfig = torch.quantization.get_default_qat_qconfig('fbgemm')
+    prepare_qat(quantised_policy, inplace=True)
     # Simulated fine-tuning
-    optimizer = torch.optim.Adam(quantized_policy.parameters(), lr=1e-4)
+    optimizer = torch.optim.Adam(quantised_policy.parameters(), lr=1e-4)
     for epoch in range(10):  # Fine-tuning loop
         optimizer.zero_grad()
         # Simulated loss computation
         loss = torch.tensor(0.1, requires_grad=True)  # Dummy loss
         loss.backward()
         optimizer.step()
-    convert(quantized_policy, inplace=True)
-    return quantized_policy
+    convert(quantised_policy, inplace=True)
+    return quantised_policy
 
 if __name__ == "__main__":
     input_dim = 4  # CartPole observation space

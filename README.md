@@ -26,7 +26,7 @@ Additionally, the project implements Interval Neural Networks (INNs) to verify t
 ## Key Features
 - Reinforcement Learning:
   - Train a neural network policy using an reinforcement learning algorithm in the CartPole environment.
-- Quantization Techniques:
+- sation Techniques:
   - Apply and compare PTQ and QAT for model optimization.
 - Verification with Interval Neural Networks (INNs):
   - Use INNs to verify decision consistency between unquantised and quantised models.
@@ -59,12 +59,12 @@ pip3 install -r requirements.txt
 python3 train_policy.py
 ```
 
-2. Apply Quantization: Apply PTQ or QAT to the trained model:
+2. Apply Quantisation: Apply PTQ or QAT to the trained model:
 ```
 python3 apply_quantisation.py
 ```
 
-3. Verify Consistency: Verify the consistency between quantized and unquantized models using INNs:
+3. Verify Consistency: Verify the consistency between quantised and unquantised models using INNs:
 ```
 python verify_consistency.py
 ```
@@ -76,13 +76,13 @@ python evaluate_models.py
 
 ## Project structure
 ```
-Consistency_Quantized_Constraints/
+Consistency_Quantised_Constraints/
 ├── src/                      # Source code directory
 │   ├── models.py             # Contains the PolicyNetwork class definition
 │   ├── policy_model.py       # Contains the PolicyNetwork class definition and utilities for baseline model
-│   ├── ptq_model.py          # Contains the PTQPolicyNetwork class and quantization utilities
+│   ├── ptq_model.py          # Contains the PTQPolicyNetwork class and quantisation utilities
 │   ├── train_and_save_policy.py # Script to train the baseline policy and save it
-│   ├── apply_and_save_ptq.py    # Script to apply PTQ and save the quantized policy
+│   ├── apply_and_save_ptq.py    # Script to apply PTQ and save the quantised policy
 │   ├── train_policy.py       # Script to train the baseline policy
 │   ├── apply_quantisation.py # Script to apply PTQ and QAT
 │   ├── verify_consistency.py # Script to verify consistency using INNs
@@ -98,7 +98,7 @@ Consistency_Quantized_Constraints/
 │   ├── final_presentation.pdf # Final presentation slides
 ├── models/                   # Directory for storing models
 │   ├── policy.pth            # Saved baseline trained policy
-│   └── ptq_policy.pth        # Saved quantized PTQ policy
+│   └── ptq_policy.pth        # Saved sed PTQ policy
 ├── requirements.txt          # List of required dependencies
 └── README.md                 # Project documentation
 

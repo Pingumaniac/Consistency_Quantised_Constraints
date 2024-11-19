@@ -20,7 +20,7 @@ class TestEvaluateModels(unittest.TestCase):
         baseline_reward = evaluate_policy(self.env, self.policy)
         ptq_reward = evaluate_policy(self.env, self.ptq_policy)
         self.assertGreater(baseline_reward, 0, "Baseline model should produce rewards")
-        self.assertGreater(ptq_reward, 0, "Quantized model should produce rewards")
+        self.assertGreater(ptq_reward, 0, "Quantised model should produce rewards")
 
 if __name__ == '__main__':
     unittest.main()
