@@ -1,5 +1,5 @@
 import torch
-from model.policy_model import PolicyNetwork, save_policy_model
+from models.policy_model import PolicyNetwork, save_policy_model
 import gymnasium as gym
 from src.train_policy import train_policy
 
