@@ -4,13 +4,15 @@ from models import PolicyNetwork
 
 # Apply Post-Training Quantisation (PTQ)
 def apply_ptq(policy):
+    torch.backends.quantized.engine = 'qnnpack'
     quantised_policy = quantize_dynamic(policy, {torch.nn.Linear}, dtype=torch.qint8)
     return quantised_policy
 
 # Apply Quantisation-Aware Training (QAT)
 def apply_qat(policy):
     quantised_policy = QuantWrapper(policy)
-    quantised_policy.qconfig = torch.quantization.get_default_qat_qconfig('fbgemm')
+    # quantised_policy.qconfig = torch.quantization.get_default_qat_qconfig('fbgemm')
+    quantised_policy.qconfig = torch.quantization.get_default_qat_qconfig('qnnpack')
     prepare_qat(quantised_policy, inplace=True)
     # Simulated fine-tuning
     optimiser = torch.optim.Adam(quantised_policy.parameters(), lr=1e-4)
@@ -28,12 +30,12 @@ if __name__ == "__main__":
     output_dim = 2  # CartPole action space
 
     policy = PolicyNetwork(input_dim, output_dim)
-    policy.load_state_dict(torch.load("models/policy.pth"))
+    policy.load_state_dict(torch.load("../models/policy.pth"))
 
     # Apply PTQ
     ptq_policy = apply_ptq(policy)
-    torch.save(ptq_policy.state_dict(), "models/ptq_policy.pth")
+    torch.save(ptq_policy.state_dict(), "../models/ptq_policy.pth")
 
     # Apply QAT
     qat_policy = apply_qat(policy)
-    torch.save(qat_policy.state_dict(), "models/qat_policy.pth")
+    torch.save(qat_policy.state_dict(), "../models/qat_policy.pth")

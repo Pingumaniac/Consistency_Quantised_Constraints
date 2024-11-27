@@ -1,6 +1,11 @@
 import gymnasium as gym
 import torch
+import torch.nn as nn
 from models import PolicyNetwork
+def prepare_quantized_model(model):
+    model.fc1 = nn.quantized.dynamic.Linear(model.fc1.in_features, model.fc1.out_features)
+    model.fc2 = nn.quantized.dynamic.Linear(model.fc2.in_features, model.fc2.out_features)
+    return model
 
 def evaluate_policy(env, policy, num_episodes=100):
     total_rewards = []
@@ -9,7 +14,7 @@ def evaluate_policy(env, policy, num_episodes=100):
         done = False
         total_reward = 0
         while not done:
-            state_tensor = torch.tensor(state, dtype=torch.float32)
+            state_tensor = torch.tensor(state, dtype=torch.float32).unsqueeze(0)
             action_prob = policy(state_tensor)
             action = torch.argmax(action_prob).item()
             state, reward, done, _, _ = env.step(action)
@@ -22,12 +27,16 @@ if __name__ == "__main__":
     input_dim = env.observation_space.shape[0]
     output_dim = env.action_space.n
 
+    # Set the quantized backend
+    torch.backends.quantized.engine = 'qnnpack'
+
     # Load models
     policy = PolicyNetwork(input_dim, output_dim)
-    policy.load_state_dict(torch.load("models/policy.pth"))
+    policy.load_state_dict(torch.load("../models/policy.pth", weights_only=True))
 
     ptq_policy = PolicyNetwork(input_dim, output_dim)
-    ptq_policy.load_state_dict(torch.load("models/ptq_policy.pth"))
+    ptq_policy = prepare_quantized_model(ptq_policy)
+    ptq_policy.load_state_dict(torch.load("../models/ptq_policy.pth", weights_only=True))
 
     # Evaluate models
     baseline_reward = evaluate_policy(env, policy)

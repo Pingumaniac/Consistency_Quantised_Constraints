@@ -1,3 +1,5 @@
+import os
+
 import gymnasium as gym
 import torch
 import torch.nn as nn
@@ -33,7 +35,7 @@ def train_policy(env, policy, optimiser, num_episodes):
         for log_prob, reward in zip(log_probs, discounted_rewards):
             policy_loss.append(-log_prob * reward)
         optimiser.zero_grad()
-        policy_loss = torch.cat(policy_loss).sum()
+        policy_loss = torch.stack(policy_loss).sum()
         policy_loss.backward()
         optimiser.step()
 
@@ -45,4 +47,6 @@ if __name__ == "__main__":
     policy = PolicyNetwork(input_dim, output_dim)
     optimiser = optim.Adam(policy.parameters(), lr=1e-3)
     train_policy(env, policy, optimiser, num_episodes=500)
-    torch.save(policy.state_dict(), "models/policy.pth")
+
+    os.makedirs("../models", exist_ok=True)
+    torch.save(policy.state_dict(), "../models/policy.pth")
