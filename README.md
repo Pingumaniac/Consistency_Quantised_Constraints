@@ -96,9 +96,6 @@ Consistency_Quantised_Constraints/
 │   └── test_interval_nn.py   # Unit tests for interval_nn.py
 ├── doc/                      # Documentation directory
 │   ├── final_presentation.pdf # Final presentation slides
-├── models/                   # Directory for storing models
-│   ├── policy.pth            # Saved baseline trained policy
-│   └── ptq_policy.pth        # Saved sed PTQ policy
 ├── requirements.txt          # List of required dependencies
 └── README.md                 # Project documentation
 
