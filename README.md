@@ -1,16 +1,12 @@
 # Consistency_Quantised_Constraints
 CS 5891 Special Topics - Algorithms for Decision-Making Final Project
 
-## About Members
+## About Me
 
 #### Young-jae Moon
 * M.Sc. in computer science and Engineering Graduate Fellowship recipient at Vanderbilt University.
 * Incoming Online Master in computer science student at Georgia Tech.
 * Email: youngjae.moon@Vanderbilt.Edu
-
-#### Weizhe Jiao
-* B.Sc. in computer science at Vanderbilt University.
-* Email: weizhe.jiao@Vanderbilt.Edu
 
 ## Course Instructor
 
@@ -66,12 +62,12 @@ python3 apply_quantisation.py
 
 3. Verify Consistency: Verify the consistency between quantised and unquantised models using INNs:
 ```
-python verify_consistency.py
+python3 verify_consistency.py
 ```
 
 4. Evaluate Models: Compare the performance of baseline, PTQ, and QAT models:
 ```
-python evaluate_models.py
+python3 evaluate_models.py
 ```
 
 ## Project structure
