@@ -2,12 +2,19 @@ import gymnasium as gym
 import torch
 import torch.nn as nn
 from models import PolicyNetwork
+
 def prepare_quantized_model(model):
+    """
+    Prepare the model for dynamic quantization.
+    """
     model.fc1 = nn.quantized.dynamic.Linear(model.fc1.in_features, model.fc1.out_features)
     model.fc2 = nn.quantized.dynamic.Linear(model.fc2.in_features, model.fc2.out_features)
     return model
 
 def evaluate_policy(env, policy, num_episodes=100):
+    """
+    Evaluate the policy on the given environment.
+    """
     total_rewards = []
     for _ in range(num_episodes):
         state, _ = env.reset()
@@ -32,11 +39,11 @@ if __name__ == "__main__":
 
     # Load models
     policy = PolicyNetwork(input_dim, output_dim)
-    policy.load_state_dict(torch.load("./models/policy.pth", weights_only=True))
+    policy.load_state_dict(torch.load("./models/policy.pth"))
 
     ptq_policy = PolicyNetwork(input_dim, output_dim)
     ptq_policy = prepare_quantized_model(ptq_policy)
-    ptq_policy.load_state_dict(torch.load("./models/ptq_policy.pth", weights_only=True))
+    ptq_policy.load_state_dict(torch.load("./models/ptq_policy.pth"))
 
     # Evaluate models
     baseline_reward = evaluate_policy(env, policy)

@@ -79,13 +79,14 @@ Consistency_Quantised_Constraints/
 │   ├── models.py             # Contains the PolicyNetwork class definition
 │   ├── policy_model.py       # Contains the PolicyNetwork class definition and utilities for baseline model
 │   ├── ptq_model.py          # Contains the PTQPolicyNetwork class and quantisation utilities
-│   ├── train_and_save_policy.py # Script to train the baseline policy and save it
-│   ├── apply_and_save_ptq.py    # Script to apply PTQ and save the quantised policy
 │   ├── train_policy.py       # Script to train the baseline policy
 │   ├── apply_quantisation.py # Script to apply PTQ and QAT
 │   ├── verify_consistency.py # Script to verify consistency using INNs
 │   ├── evaluate_models.py    # Script to evaluate and compare models
 │   └── interval_nn.py        # Implementation of the interval neural network functionality
+│   ├── models/                   # Directory for storing models
+│       ├── policy.pth            # Saved baseline trained policy
+│       ├──  ptq_policy.pth        # Saved sed PTQ policy
 ├── test/                     # Unit tests directory
 │   ├── test_train_policy.py  # Unit tests for train_policy.py
 │   ├── test_apply_quantisation.py # Unit tests for apply_quantisation.py
