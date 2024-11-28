@@ -8,6 +8,8 @@ CS 5891 Special Topics - Algorithms for Decision-Making Final Project
 * Incoming Online Master in computer science student at Georgia Tech.
 * Email: youngjae.moon@Vanderbilt.Edu
 
+Note: Weizhe Jiao was part of our team, but he decided to leave this project (he was busy with other courses).
+
 ## Course Instructor
 
 #### Professor Ayan Mukhopadhyay
