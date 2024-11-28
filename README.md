@@ -19,7 +19,7 @@ Note: Weizhe Jiao was part of our team, but he decided to leave this project (he
 ## Project Overview
 This project explores the trade-offs between efficiency and performance in decision-making systems by quantising neural network policies and verifying their consistency with unquantised models. Using the CartPole environment in Gymnasium, the project evaluates both Post-Training Quantisation (PTQ) and Quantisation-Aware Training (QAT), comparing their impact on decision accuracy, inference speed, and robustness.
 
-Additionally, the project implements Interval Neural Networks (INNs) to verify that the quantised networks remain consistent with the original models, ensuring reliability in decision-making under quantised constraints.
+Additionally, the project implements Interval Neural Networks (INNs) to investigate that the quantised networks remain consistent with the original models, ensuring reliability in decision-making under quantised constraints.
 
 ## Key Features
 - Reinforcement Learning:
@@ -61,14 +61,14 @@ python3 train_policy.py
 python3 apply_quantisation.py
 ```
 
-3. Verify Consistency: Verify the consistency between quantised and unquantised models using INNs:
-```
-python3 verify_consistency.py
-```
-
-4. Evaluate Models: Compare the performance of baseline, PTQ, and QAT models:
+3. Evaluate Models: Compare the performance of baseline, PTQ, and QAT models:
 ```
 python3 evaluate_models.py
+```
+
+4. Verify Consistency: Verify the consistency between quantised and unquantised models using INNs:
+```
+python3 verify_consistency.py
 ```
 
 ## Project structure

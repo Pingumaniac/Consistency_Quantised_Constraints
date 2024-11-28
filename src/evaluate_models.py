@@ -1,27 +1,22 @@
+# evaluate_models.py
+
 import gymnasium as gym
 import torch
-import torch.nn as nn
 from models import PolicyNetwork
 import warnings
 
 # Suppress TypedStorage deprecation warning
 warnings.filterwarnings("ignore", message="TypedStorage is deprecated")
 
-def prepare_quantized_model(model):
+def load_quantized_model(model_path, input_dim, output_dim):
     """
-    Prepare the model for dynamic quantization.
+    Load a quantized model with dynamic quantization applied.
     """
-    model.fc1 = nn.quantized.dynamic.Linear(model.fc1.in_features, model.fc1.out_features)
-    model.fc2 = nn.quantized.dynamic.Linear(model.fc2.in_features, model.fc2.out_features)
-    return model
-
-def prepare_qat_model(model):
-    """
-    Prepare the model for Quantization-Aware Training (QAT).
-    """
-    model.qconfig = torch.quantization.get_default_qconfig('qnnpack')
-    torch.quantization.prepare_qat(model, inplace=True)
-    torch.quantization.convert(model, inplace=True)
+    # Instantiate the model and dynamically quantize it
+    model = PolicyNetwork(input_dim, output_dim)
+    model = torch.quantization.quantize_dynamic(model, {torch.nn.Linear}, dtype=torch.qint8)
+    # Load the state dictionary
+    model.load_state_dict(torch.load(model_path))
     return model
 
 def evaluate_policy(env, policy, num_episodes=10, max_steps=100, device="cpu"):
@@ -51,10 +46,10 @@ if __name__ == "__main__":
     output_dim = env.action_space.n
 
     # Set the quantized backend
-    torch.backends.quantized.engine = 'qnnpack'
+    torch.backends.quantized.engine = 'fbgemm'
 
-    # Device setup (use GPU if available)
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    # Device setup (use CPU for quantized models)
+    device = torch.device("cpu")
 
     # Load models
     print("Loading baseline model...")
@@ -63,15 +58,11 @@ if __name__ == "__main__":
     policy.to(device)
 
     print("Loading PTQ model...")
-    ptq_policy = PolicyNetwork(input_dim, output_dim)
-    ptq_policy = prepare_quantized_model(ptq_policy)
-    ptq_policy.load_state_dict(torch.load("./models/ptq_policy.pth"))
+    ptq_policy = load_quantized_model("./models/ptq_policy.pth", input_dim, output_dim)
     ptq_policy.to(device)
 
     print("Loading QAT model...")
-    qat_policy = PolicyNetwork(input_dim, output_dim)
-    qat_policy = prepare_qat_model(qat_policy)
-    qat_policy.load_state_dict(torch.load("./models/qat_policy.pth"))
+    qat_policy = load_quantized_model("./models/qat_policy.pth", input_dim, output_dim)
     qat_policy.to(device)
 
     # Evaluate models

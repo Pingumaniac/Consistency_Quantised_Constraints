@@ -1,7 +1,8 @@
 # apply_quantisation.py
 
 import torch
-from torch.quantization import quantize_dynamic, prepare_qat, convert
+from torch.quantization import quantize_dynamic, prepare_qat, convert, QConfig
+from torch.quantization.observer import MinMaxObserver, PerChannelMinMaxObserver
 from models import PolicyNetwork
 
 # Apply Post-Training Quantization (PTQ)
@@ -9,7 +10,7 @@ def apply_ptq(policy):
     """
     Apply Post-Training Quantization to the model.
     """
-    torch.backends.quantized.engine = 'qnnpack'
+    torch.backends.quantized.engine = 'fbgemm'  # Use fbgemm backend
     quantised_policy = quantize_dynamic(policy, {torch.nn.Linear}, dtype=torch.qint8)
     return quantised_policy
 
@@ -18,7 +19,16 @@ def apply_qat(policy, calibration_data):
     """
     Apply Quantization-Aware Training to the model.
     """
-    policy.qconfig = torch.quantization.get_default_qconfig('qnnpack')
+    torch.backends.quantized.engine = 'fbgemm'  # Use fbgemm backend
+
+    # Define a custom QConfig with explicit quant_min, quant_max, and dtype=torch.qint8
+    print("Configuring QAT observers with explicit quant_min, quant_max, and dtype=torch.qint8...")
+    custom_qconfig = QConfig(
+        activation=MinMaxObserver.with_args(quant_min=0, quant_max=255, dtype=torch.quint8),
+        weight=PerChannelMinMaxObserver.with_args(quant_min=-128, quant_max=127, dtype=torch.qint8)
+    )
+
+    policy.qconfig = custom_qconfig  # Assign the custom QConfig
     prepare_qat(policy, inplace=True)
 
     # Calibrate the model with representative input data

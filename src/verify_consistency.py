@@ -4,7 +4,10 @@ import torch
 from interval_nn import Interval, IntervalNeuralNetwork
 from models import PolicyNetwork
 import torch.nn as nn
+import warnings
 
+# Suppress TypedStorage deprecation warning
+warnings.filterwarnings("ignore", message="TypedStorage is deprecated")
 
 def prepare_quantized_model(model, is_dynamic=True):
     """
@@ -17,6 +20,10 @@ def prepare_quantized_model(model, is_dynamic=True):
     if is_dynamic:
         model.fc1 = nn.quantized.dynamic.Linear(model.fc1.in_features, model.fc1.out_features)
         model.fc2 = nn.quantized.dynamic.Linear(model.fc2.in_features, model.fc2.out_features)
+    else:
+        model.qconfig = torch.quantization.get_default_qconfig('fbgemm')
+        torch.quantization.prepare_qat(model, inplace=True)
+        torch.quantization.convert(model, inplace=True)
     return model
 
 
@@ -47,20 +54,34 @@ if __name__ == "__main__":
     quant_error = 0.05  # Adjusted quantization error
 
     # Set the quantized backend
-    torch.backends.quantized.engine = 'qnnpack'
+    torch.backends.quantized.engine = 'fbgemm'
 
     # Load the baseline model
+    print("Loading baseline model...")
     policy = PolicyNetwork(input_dim, output_dim)
     policy.load_state_dict(torch.load("./models/policy.pth"))
 
     # Load the PTQ model
+    print("Loading PTQ model...")
     ptq_policy = PolicyNetwork(input_dim, output_dim)
     ptq_policy = prepare_quantized_model(ptq_policy, is_dynamic=True)
     ptq_policy.load_state_dict(torch.load("./models/ptq_policy.pth"))
+
+    # Load the QAT model
+    print("Loading QAT model...")
+    qat_policy = PolicyNetwork(input_dim, output_dim)
+    qat_policy = prepare_quantized_model(qat_policy, is_dynamic=False)
+    qat_policy.load_state_dict(torch.load("./models/qat_policy.pth"))
 
     # Generate test inputs
     test_inputs = [torch.rand(input_dim) for _ in range(10)]
 
     # Verify decision consistency for PTQ
+    print("Verifying consistency for PTQ...")
     consistency_ptq = verify_decision_consistency(policy, ptq_policy, test_inputs, quant_error)
     print(f"Decision Consistency (Baseline vs PTQ): {consistency_ptq}")
+
+    # Verify decision consistency for QAT
+    print("Verifying consistency for QAT...")
+    consistency_qat = verify_decision_consistency(policy, qat_policy, test_inputs, quant_error)
+    print(f"Decision Consistency (Baseline vs QAT): {consistency_qat}")
