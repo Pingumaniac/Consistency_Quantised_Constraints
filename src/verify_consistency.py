@@ -1,3 +1,5 @@
+# verify_consistency.py
+
 import torch
 from interval_nn import Interval, IntervalNeuralNetwork
 from models import PolicyNetwork

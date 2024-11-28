@@ -77,7 +77,6 @@ Consistency_Quantised_Constraints/
 ├── src/                      # Source code directory
 │   ├── models.py             # Contains the PolicyNetwork class definition
 │   ├── policy_model.py       # Contains the PolicyNetwork class definition and utilities for baseline model
-│   ├── ptq_model.py          # Contains the PTQPolicyNetwork class and quantisation utilities
 │   ├── train_policy.py       # Script to train the baseline policy
 │   ├── apply_quantisation.py # Script to apply PTQ and QAT
 │   ├── verify_consistency.py # Script to verify consistency using INNs
