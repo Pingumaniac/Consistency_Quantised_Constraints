@@ -32,11 +32,11 @@ if __name__ == "__main__":
 
     # Load models
     policy = PolicyNetwork(input_dim, output_dim)
-    policy.load_state_dict(torch.load("../models/policy.pth", weights_only=True))
+    policy.load_state_dict(torch.load("./models/policy.pth", weights_only=True))
 
     ptq_policy = PolicyNetwork(input_dim, output_dim)
     ptq_policy = prepare_quantized_model(ptq_policy)
-    ptq_policy.load_state_dict(torch.load("../models/ptq_policy.pth", weights_only=True))
+    ptq_policy.load_state_dict(torch.load("./models/ptq_policy.pth", weights_only=True))
 
     # Evaluate models
     baseline_reward = evaluate_policy(env, policy)

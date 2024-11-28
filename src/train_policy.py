@@ -1,5 +1,4 @@
 import os
-
 import gymnasium as gym
 import torch
 import torch.nn as nn
@@ -28,9 +27,12 @@ def train_policy(env, policy, optimiser, num_episodes):
             total_reward = r + 0.99 * total_reward
             discounted_rewards.insert(0, total_reward)
 
+        # Normalize rewards
         discounted_rewards = torch.tensor(discounted_rewards)
-        discounted_rewards = (discounted_rewards - discounted_rewards.mean()) / (discounted_rewards.std() + 1e-9)
+        if discounted_rewards.std() > 0:
+            discounted_rewards = (discounted_rewards - discounted_rewards.mean()) / (discounted_rewards.std() + 1e-9)
 
+        # Compute policy loss
         policy_loss = []
         for log_prob, reward in zip(log_probs, discounted_rewards):
             policy_loss.append(-log_prob * reward)
@@ -39,6 +41,9 @@ def train_policy(env, policy, optimiser, num_episodes):
         policy_loss.backward()
         optimiser.step()
 
+        print(f"Episode {episode + 1}/{num_episodes}, Total Reward: {sum(rewards)}")
+
+
 if __name__ == "__main__":
     env = gym.make('CartPole-v1')
     input_dim = env.observation_space.shape[0]
@@ -46,7 +51,9 @@ if __name__ == "__main__":
 
     policy = PolicyNetwork(input_dim, output_dim)
     optimiser = optim.Adam(policy.parameters(), lr=1e-3)
+
     train_policy(env, policy, optimiser, num_episodes=500)
 
-    os.makedirs("../models", exist_ok=True)
-    torch.save(policy.state_dict(), "../models/policy.pth")
+    os.makedirs("./models", exist_ok=True)
+    torch.save(policy.state_dict(), "./models/policy.pth")
+    print("Model saved to ./models/policy.pth")

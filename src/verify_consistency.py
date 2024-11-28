@@ -16,7 +16,6 @@ def verify_decision_consistency(unquantised_model, quantised_model, test_inputs,
         unquantised_output = unquantised_model(test_input)
         interval_output = interval_model.propagate(input_interval)
 
-        # Perform element-wise comparison and reduce to a single boolean value using `.all()`
         if not ((interval_output.lower <= unquantised_output).all() and (unquantised_output <= interval_output.upper).all()):
             consistent = False
             break
@@ -30,14 +29,18 @@ if __name__ == "__main__":
     # Set the quantized backend
     torch.backends.quantized.engine = 'qnnpack'
 
+    # Load the baseline model
     policy = PolicyNetwork(input_dim, output_dim)
-    policy.load_state_dict(torch.load("../models/policy.pth", weights_only= True))
+    policy.load_state_dict(torch.load("./models/policy.pth"))
 
+    # Load the PTQ model
     ptq_policy = PolicyNetwork(input_dim, output_dim)
     ptq_policy = prepare_quantized_model(ptq_policy)
-    ptq_policy.load_state_dict(torch.load("../models/ptq_policy.pth", weights_only=True))
+    ptq_policy.load_state_dict(torch.load("./models/ptq_policy.pth"))
 
+    # Generate test inputs
     test_inputs = [torch.rand(input_dim) for _ in range(10)]
 
+    # Verify decision consistency
     consistency = verify_decision_consistency(policy, ptq_policy, test_inputs, quant_error)
     print(f"Decision Consistency (Baseline vs PTQ): {consistency}")
